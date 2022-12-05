@@ -1,0 +1,69 @@
+directive @contact(
+    name: String!
+    url: String
+    description: String
+) on SCHEMA
+
+schema
+@contact(
+    name: "Student Server Team"
+    url: ""
+    description: "send urgent issues."
+)
+@link(
+    url: "https://specs.apollo.dev/federation/v2.0",
+    import: ["@key"]
+) {
+    query: Query
+    mutation: Mutation
+}
+
+type Professor @key(fields: "id") {
+	id: ID
+	deptName: String
+	managerName: String
+}
+
+type Student @key(fields: "id") {
+	id: ID
+	name: String
+	age: Int
+	deptId: String
+	studentId: String
+	dob: String
+	role: String
+}
+
+input StudentInput {
+	id: ID
+	name: String
+	age: Int
+	deptId: String
+	studentId: String
+	dob: String
+	role: String
+}
+
+input ProfessorInput {
+	id: ID
+	deptName: String
+	managerName: String
+}
+
+# Root
+type Query {
+	findAllProfessors: [Professor]
+	findAllStudents: [Student]
+	findProfessorById(id: String): Professor
+	findStudentById(id: String): Student
+}
+
+# Root
+type Mutation {
+	createProfessor(professor: ProfessorInput): Professor
+	createStudent(student: StudentInput): Student
+	updateProfessor(professor: ProfessorInput): Professor
+	updateStudent(student: StudentInput): Student
+	removeProfessorById(id : String): Boolean
+	removeStudentById(id: String): Boolean
+}
